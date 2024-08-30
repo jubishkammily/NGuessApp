@@ -1,24 +1,25 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NGAPI.Data;
 using NGAPI.Models;
 
 namespace NGAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    [Authorize]
+    public class UsersController : BaseApiController
     {
         private readonly DataContext _dataContext;
         public UsersController(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
-
+        [AllowAnonymous]
         [HttpGet]
-        public ActionResult<IEnumerable<AppUser>> GetUsers()
+        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
-            var users =  _dataContext.Users.ToList();
+            var users =  await _dataContext.Users.ToListAsync();
             return users;
         }
 
