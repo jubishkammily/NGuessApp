@@ -1,0 +1,24 @@
+@if(!this.registerMode){
+<div class="contaner mt-5">
+    <div style="text-align: center; ;">
+        <h1>Find Your Home Page</h1>
+        <div>
+            <button class="btn btn-primary btn-lg me-2" (click)="registerToggle()">Go to Home</button>
+        </div>
+    </div>
+
+</div>
+
+}
+@else{
+<div class="contaner">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <p>Register Form</p>
+            <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register>
+        </div>
+
+    </div>
+
+</div>
+}

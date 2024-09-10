@@ -1,16 +1,41 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { User } from '../models/User';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
   private http = inject(HttpClient);
+  currentUser = signal<User | null>(null)
   baseUrl = 'https://localhost:5197/api/';
   login(model: any) {
-    console.log('login service');
-    var url = this.baseUrl + 'Account/login';
-    console.log('url : ', url);
-    return this.http.post(this.baseUrl + 'account/login', model);
+    return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
+      map(user=>{
+        if(user){
+          localStorage.setItem('user',JSON.stringify(user));
+          this.currentUser.set(user);
+        }
+      })
+    );
+  }
+
+  register(model: any) {
+    return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
+      map(user=>{
+        if(user){
+          localStorage.setItem('user',JSON.stringify(user));
+          this.currentUser.set(user);
+         }
+         return user;
+      })
+    );
+    
+  }
+
+  logOut(){
+    localStorage.removeItem('user');
+    this.currentUser.set(null);
   }
 }

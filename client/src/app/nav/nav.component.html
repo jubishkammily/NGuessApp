@@ -17,7 +17,7 @@
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li>
       </ul>
-      @if(loggedIn){
+      @if(this.accountService.currentUser()){
 
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle text-light" type="button" data-bs-toggle="dropdown"
@@ -29,7 +29,7 @@
           <li><a class="dropdown-item" href="#" (click)="logout()">logout</a></li>
         </ul>
       </div>
-      } @if(!loggedIn){
+      } @if(!this.accountService.currentUser()){
       <form class="d-flex" (ngSubmit)="login()">
         <input name="userName" [(ngModel)]="model.userName" class="form-control me-2" type="text"
           placeholder="User Name" aria-label="Search" />
